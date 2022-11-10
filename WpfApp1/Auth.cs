@@ -4,78 +4,81 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WpfApp1
 {
-    //класс для работы с паролями
     public class Auth
     {
-        //создаем публичный метод 
         public string TestPassword(string password)
         {
-            //Проверяем пароль на длину строки от 7 до 10 включительно
-            if (password.Length >= 7 && password.Length <= 10)
+
+            //варианты для тестирования пароля:
+
+            //1. fj3#Lp - короткий пароль
+            if (password.Length < 7)
             {
-                //переменная для проверки цифры
-                bool IsDigit = false;
-                //переменная для проверки верхнего регистра
-                bool IsUpper = false;
-                //переменная для проверки нижнего регистра
-                bool IsLower = false;
-                //переменная для проверки спецсимволов
-                bool IsSpec = false;
-                //цикл по всем символам пароля
-                foreach (var item in password)
-                {
-                    //проверяем пароль на цифры
-                    if (char.IsDigit(item))
-                    {
-                        IsDigit = true;
-                    }
-                    //проверяем пароль на буквы верхнего регистра
-                    if (char.IsUpper(item))
-                    {
-                        IsUpper = true;
-                    }
-                    //проверяем пароль на буквы нижнего регистра
-                    if (char.IsLower(item))
-                    {
-                        IsLower = true;
-                    }
-                    //проверяем пароль на спецсимволы
-                    if ("@#$%^&".Contains(item))
-                    {
-                        IsSpec = true;
-                    }
-                }
-                //Проверяем переменную если истина то цифры есть
-                if (!IsDigit)
-                {
-                    return "Пароль должен содержать цифры!";
-                }
-                //Проверяем переменную если истина то есть буквы нижнего регистра
-                if (!IsLower)
-                {
-                    return "Пароль должен содержать симнволы в нижнем регистре!";
-                }
-                //Проверяем переменную если истина то есть буквы верхнего регистра
-                if (!IsUpper)
-                {
-                    return "Пароль должен содержать символы в верхнем регистре!";
-                }
-                //Проверяем переменную если истина то есть спецсимволы
-                if (!IsSpec)
-                {
-                    return "Пароль должен содержать спецсимволы!";
-                }
-                //возвращает (выходит) из метода с сообщением в квадратных ковычках
-                return "Пароль отличный!";
+                return "Пароль короткий!";
             }
-            //если длина пароля меньше 7 или больше 10 то вернем сообщение об ошибке
-            else
+            //2. lfT#35glox4 - длинный пароль
+            if (password.Length > 10)
             {
-                return "Неверная длина пароля!";
+                return "Пароль длинный!";
             }
+            //3. ok#hjkKJH - пароль не содержит цифры
+            bool IsDigit = false;
+            //4. fkjg03k# - пароль не содержит символы в верхнем регистре
+            bool IsUpper = false;
+            //5. HGJ34LKJ# - пароль не содержит символы в нижнем регистре
+            bool IsLower = false;
+            //6. df3gdF8GD - пароль не содержит спецсимволы
+            bool IsSpec = false;
+            foreach (var item in password)
+            {
+                if (char.IsDigit(item))
+                {
+                    IsDigit = true;
+                }
+                if (char.IsUpper(item))
+                {
+                    IsUpper = true;
+                }
+                if (char.IsLower(item))
+                {
+                    IsLower = true;
+                }
+                if ("@#$%^&".Contains(item))
+                {
+                    IsSpec = true;
+                }
+            }
+            if (!IsDigit)
+            {
+                return "Пароль должен содержать цифры!";
+            }
+            if (!IsLower)
+            {
+                return "Пароль должен содержать символы в нижнем регистре!";
+            }
+            if (!IsUpper)
+            {
+                return "Пароль должен содержать символы в верхнем регистре!";
+            }
+            if (!IsSpec)
+            {
+                return "Пароль должен содержать спецсимволы!";
+            }
+            //7. Kt@@bj7F - пароль содержит повторяющиеся символы
+            for (int i = 0; i < password.Length - 1; i++)
+            {
+                if (password[i] == password[i + 1])
+                {
+                    return "В пароле не должно быть подряд идущих повторяющихся символов!";
+                }
+
+            }
+            //8. GT$k8f74 - пароль соответствует всем требованиям
+            return "Пароль отличный!";
         }
     }
 }
